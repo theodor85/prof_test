@@ -13,6 +13,8 @@ pnpm lint     # oxlint
 
 Тестов нет.
 
+Деплой: `.github/workflows/deploy.yml` при пуше в `main` запускает lint и build и выкладывает `dist` на Cloudflare Pages (проект `prof-test` или переменная репозитория `CLOUDFLARE_PROJECT_NAME`). Нужны секреты `CLOUDFLARE_API_TOKEN` и `CLOUDFLARE_ACCOUNT_ID`.
+
 ## Как устроено
 
 Маршрутизации нет: `src/App.tsx` хранит текущий экран в `useState` (`start` → `quiz` → `result`). С `start` можно сразу открыть `result` из списка пройденных тестов.
