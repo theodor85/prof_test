@@ -17,6 +17,8 @@ export interface Scale {
   name: string
   character: string
   description: string
+  /** Чем заняться: показывается на экране результата в раскрывающемся блоке. */
+  recommended_activities: string
 }
 
 export interface TestData {

@@ -19,7 +19,7 @@ interface ShownClass {
 
 export function ResultScreen({ scales, result, subtitle, backLabel, onBack }: Props) {
   const scaleById = (id: string): Scale =>
-    scales.find((s) => s.id === id) ?? { id, name: id, character: id, description: '' }
+    scales.find((s) => s.id === id) ?? { id, name: id, character: id, description: '', recommended_activities: '' }
 
   const verdict = classify(result)
   const shown: ShownClass[] =
@@ -92,6 +92,14 @@ export function ResultScreen({ scales, result, subtitle, backLabel, onBack }: Pr
                 {isSubclass && <span className="ml-2 text-sm font-normal text-neutral-500">подкласс</span>}
               </p>
               <p className="mt-1 text-neutral-700 dark:text-neutral-300">{scale.description}</p>
+              {scale.recommended_activities && (
+                <details className="group mt-2">
+                  <summary className="cursor-pointer list-none text-sm font-medium text-brand-700 select-none dark:text-brand-100 [&::-webkit-details-marker]:hidden">
+                    <span className="inline-block transition-transform group-open:rotate-90">›</span> Что попробовать
+                  </summary>
+                  <p className="mt-1 text-neutral-700 dark:text-neutral-300">{scale.recommended_activities}</p>
+                </details>
+              )}
             </li>
           ))}
         </ul>
