@@ -1,12 +1,13 @@
 import { Fragment } from 'react'
 import { ClassIcon } from '@/components/ClassIcon'
 import { classColor } from '@/lib/classColors'
-import { classify, type Result, type Scale } from '@/lib/test'
+import { type Age, classify, type Result, type Scale, wording } from '@/lib/test'
 
 interface Props {
+  age: Age
   scales: Scale[]
   result: Result
-  /** Подзаголовок под «Твой результат», например дата прохождения. */
+  /** Подзаголовок под «Твой результат» («Ваш результат»), например дата прохождения. */
   subtitle?: string
   backLabel: string
   onBack: () => void
@@ -17,10 +18,11 @@ interface ShownClass {
   isSubclass: boolean
 }
 
-export function ResultScreen({ scales, result, subtitle, backLabel, onBack }: Props) {
+export function ResultScreen({ age, scales, result, subtitle, backLabel, onBack }: Props) {
   const scaleById = (id: string): Scale =>
     scales.find((s) => s.id === id) ?? { id, name: id, character: id, description: '', recommended_activities: '' }
 
+  const texts = wording(age)
   const verdict = classify(result)
   const shown: ShownClass[] =
     verdict.kind === 'tie'
@@ -43,13 +45,13 @@ export function ResultScreen({ scales, result, subtitle, backLabel, onBack }: Pr
   return (
     <div className="flex flex-1 flex-col gap-8">
       <div className="text-center">
-        <h1 className="text-2xl font-bold sm:text-3xl">Твой результат</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">{texts.result}</h1>
         {subtitle && <p className="mt-1 text-neutral-600 dark:text-neutral-400">{subtitle}</p>}
       </div>
 
       <section className="space-y-6">
         <h2 className="text-center text-xl font-semibold">
-          Твой класс — {mains.map((c) => c.scale.character).join(' или ')}
+          {texts.yourClass} — {mains.map((c) => c.scale.character).join(' или ')}
         </h2>
 
         <div className="flex flex-col items-center gap-5">
@@ -97,7 +99,7 @@ export function ResultScreen({ scales, result, subtitle, backLabel, onBack }: Pr
                   <summary className="cursor-pointer list-none text-sm font-medium text-brand-700 select-none dark:text-brand-100 [&::-webkit-details-marker]:hidden">
                     <span className="inline-block transition-transform group-open:rotate-90">›</span> Что попробовать
                   </summary>
-                  <p className="mt-1 text-neutral-700 dark:text-neutral-300">{scale.recommended_activities}</p>
+                  <p className="mt-1 whitespace-pre-line text-neutral-700 dark:text-neutral-300">{scale.recommended_activities}</p>
                 </details>
               )}
             </li>

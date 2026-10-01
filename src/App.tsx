@@ -9,7 +9,7 @@ type Screen =
   | { name: 'start' }
   | { name: 'quiz'; age: Age; scales: Scale[]; pairs: Pair[] }
   /** record задан, если результат открыт из списка пройденных тестов. */
-  | { name: 'result'; scales: Scale[]; result: Result; record?: HistoryRecord }
+  | { name: 'result'; age: Age; scales: Scale[]; result: Result; record?: HistoryRecord }
 
 export function App() {
   const [screen, setScreen] = useState<Screen>({ name: 'start' })
@@ -24,11 +24,11 @@ export function App() {
     saveRecord({ createdAt: new Date(), age, result }).catch((error: unknown) =>
       console.error('Не удалось сохранить результат', error),
     )
-    setScreen({ name: 'result', scales, result })
+    setScreen({ name: 'result', age, scales, result })
   }
 
   const openRecord = (record: HistoryRecord) => {
-    setScreen({ name: 'result', scales: loadTestData(record.age).scales, result: record.result, record })
+    setScreen({ name: 'result', age: record.age, scales: loadTestData(record.age).scales, result: record.result, record })
   }
 
   return (
@@ -36,6 +36,7 @@ export function App() {
       {screen.name === 'start' && <StartScreen onSelect={start} onOpenRecord={openRecord} />}
       {screen.name === 'quiz' && (
         <QuizScreen
+          age={screen.age}
           scales={screen.scales}
           pairs={screen.pairs}
           onExit={goToStart}
@@ -44,6 +45,7 @@ export function App() {
       )}
       {screen.name === 'result' && (
         <ResultScreen
+          age={screen.age}
           scales={screen.scales}
           result={screen.result}
           subtitle={

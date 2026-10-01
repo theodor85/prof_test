@@ -1,10 +1,24 @@
 import data from '@/data/data.json'
 
-export type Age = '12years' | '9years'
+export type Age = 'adults' | '12years' | '9years'
 
 export const ageLabels: Record<Age, string> = {
+  adults: 'Взрослые',
   '12years': '12 лет',
   '9years': '9 лет',
+}
+
+/** Тексты интерфейса, зависящие от возраста: ребёнку пишем на «ты», взрослому — на «вы». */
+export interface Wording {
+  question: string
+  result: string
+  yourClass: string
+}
+
+export function wording(age: Age): Wording {
+  return age === 'adults'
+    ? { question: 'Что вам больше нравится?', result: 'Ваш результат', yourClass: 'Ваш класс' }
+    : { question: 'Что тебе больше нравится?', result: 'Твой результат', yourClass: 'Твой класс' }
 }
 
 export interface Variant {

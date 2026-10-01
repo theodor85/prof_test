@@ -1,14 +1,15 @@
 import { useState } from 'react'
-import { addPoint, emptyResult, type Pair, type Result, type Scale, type Variant } from '@/lib/test'
+import { type Age, addPoint, emptyResult, type Pair, type Result, type Scale, type Variant, wording } from '@/lib/test'
 
 interface Props {
+  age: Age
   scales: Scale[]
   pairs: Pair[]
   onExit: () => void
   onFinish: (result: Result) => void
 }
 
-export function QuizScreen({ scales, pairs, onExit, onFinish }: Props) {
+export function QuizScreen({ age, scales, pairs, onExit, onFinish }: Props) {
   const [index, setIndex] = useState(0)
   const [result, setResult] = useState<Result>(() => emptyResult(scales))
 
@@ -46,7 +47,7 @@ export function QuizScreen({ scales, pairs, onExit, onFinish }: Props) {
 
       {/* Вопрос и кнопки не растягиваются на всю высоту, а стоят по центру свободного места */}
       <div className="flex flex-1 flex-col justify-center gap-6">
-        <h1 className="text-center text-xl font-semibold sm:text-2xl">Что тебе больше нравится?</h1>
+        <h1 className="text-center text-xl font-semibold sm:text-2xl">{wording(age).question}</h1>
 
         {/* key сбрасывает фокус и hover-состояние кнопок при смене пары */}
         <div key={index} className="flex flex-col gap-4 sm:flex-row">
